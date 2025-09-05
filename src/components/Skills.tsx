@@ -6,7 +6,7 @@ import { portfolioData } from '@/data/portfolio';
 const Skills = () => {
   const { skills } = portfolioData;
 
-  const skillCategories = skills.technical.reduce((acc, skill) => {
+  const skillCategories = (skills.technical || []).reduce((acc, skill) => {
     if (!acc[skill.category]) {
       acc[skill.category] = [];
     }
@@ -46,7 +46,7 @@ const Skills = () => {
             </motion.h3>
             
             <div className="space-y-8">
-              {Object.entries(skillCategories).map(([category, categorySkills], categoryIndex) => (
+               {Object.entries(skillCategories).map(([category, categorySkills], categoryIndex) => (
                 <motion.div
                   key={category}
                   initial={{ opacity: 0, y: 20 }}
@@ -56,7 +56,7 @@ const Skills = () => {
                 >
                   <h4 className="text-lg font-semibold text-primary mb-4">{category}</h4>
                   <div className="space-y-4">
-                    {categorySkills.map((skill, index) => (
+                    {(categorySkills as any[]).map((skill, index) => (
                       <div key={skill.name} className="group">
                         <div className="flex justify-between items-center mb-2">
                           <span className="font-medium">{skill.name}</span>
@@ -66,7 +66,7 @@ const Skills = () => {
                           <motion.div
                             initial={{ width: 0 }}
                             whileInView={{ width: `${skill.level}%` }}
-                            transition={{ duration: 1, delay: (categoryIndex * categorySkills.length + index) * 0.1 }}
+                            transition={{ duration: 1, delay: (categoryIndex * (categorySkills as any[]).length + index) * 0.1 }}
                             viewport={{ once: true }}
                             className="h-full bg-gradient-primary rounded-full relative"
                           >
@@ -92,7 +92,7 @@ const Skills = () => {
             <Card className="glass-card">
               <CardContent className="p-6">
                 <div className="flex flex-wrap gap-3">
-                  {skills.soft.map((skill, index) => (
+                  {(skills.soft || []).map((skill, index) => (
                     <motion.div
                       key={skill}
                       initial={{ opacity: 0, scale: 0 }}
